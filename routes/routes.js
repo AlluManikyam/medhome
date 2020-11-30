@@ -1,11 +1,8 @@
 let auth = require("../controllers/common/auth.js");
+let pharmacy = require("../controllers/mobile/pharmacy");
+let user = require("../controllers/common/users");
+
 module.exports = function (app) {
-  let bodyParser = require("body-parser");
-  app.use(bodyParser.json({ limit: "50mb" }));
-  app.use(bodyParser.urlencoded({ extended: true }));
-
-  let user = require("../controllers/common/users");
-
   // User Routes 
   app.post("/user/register", user.create_user);
   app.post("/user/login", user.login);
@@ -13,8 +10,8 @@ module.exports = function (app) {
   app.post("/user/changePassword/:id", auth.verifyToken, user.changePassword);
   app.post("/user/updateProfile/:id", auth.verifyToken, user.updateProfile);
   app.get(
-    "/user/getUserDetails/:id",
+    "/getPharmacyList",
     auth.verifyToken,
-    user.getUserDetailsByUserId
+    pharmacy.getPharmacyList
   );
 };

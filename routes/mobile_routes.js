@@ -5,9 +5,9 @@ module.exports = function (app) {
   // Pharmacy Routes
   app.post("/pharmacy/create_pharmacy", pharmacy.create_pharmacy);
   app.get(
-    "/pharmacy/getPharmacyDetails/:id",
+    "/pharmacy/list",
     auth.verifyToken,
-    pharmacy.getPharmacyDetailsByUserId
+    pharmacy.getPharmacyList
   );
 
 };

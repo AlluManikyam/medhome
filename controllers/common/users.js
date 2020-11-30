@@ -13,17 +13,9 @@ aws.config.update({
 
 const s3 = new aws.S3();
 
-//Create  incident reports
+//Create user
 exports.create_user = async (req, res) => {
-  let new_user = new User({
-    full_name: req.body.message,
-    email:req.body.email,
-    phoneNumber: req.body.phoneNumber,
-    password: req.body.password,
-    deviceToken: req.body.subject,
-    deviceType: req.body.description,
-    user_type:  req.body.user_type,
-  });
+  let new_user = new User(req.body);
   new_user.save(function (err) {
     if (err) {
       res.send({ error: true, status: "failed", msg: "failed" });
@@ -46,13 +38,12 @@ exports.login = (req, res) => {
   ) {
     const phone = req.body.phone;
     const password = req.body.password;
-    const pwd = require("crypto")
-      .createHash("md5")
-      .update(password)
-      .digest("hex");
+console.log("request",req.body);
     User.find(
-      { phone: phone, password: pwd, deleted: false },
+      { phone: phone, password: password},
       async (err, users) => {
+        console.log("request",users);
+
         if (err) {
           res.send({
             error: true,
@@ -146,7 +137,6 @@ function userLogin(phone, res) {
   });
 }
 
-
 // Set Password
 exports.setPassword = (req, res) => {
   if (
@@ -160,7 +150,11 @@ exports.setPassword = (req, res) => {
 
     User.find({ phone: phone, deleted: false }, async (err, users) => {
       if (err) {
-        res.send({ error: true, status: "failed", msg: "Invalid Phone Number" });
+        res.send({
+          error: true,
+          status: "failed",
+          msg: "Invalid Phone Number",
+        });
       } else {
         if (users.length != 0) {
           const pwd = require("crypto")
@@ -214,7 +208,7 @@ exports.setPassword = (req, res) => {
           );
         }
       }
-    })
+    });
   } else {
     res.send({ error: true, status: "failed", msg: "Please provide a email" });
   }
@@ -263,7 +257,7 @@ exports.changePassword = (req, res) => {
           }
         }
       }
-    })
+    });
   } else {
     res.send({
       error: true,
@@ -303,7 +297,7 @@ exports.forgotPassword = (req, res) => {
           });
         }
       }
-    })
+    });
   } else {
     res.send({ error: true, status: "failed", msg: "Please provide a email" });
   }
@@ -390,7 +384,7 @@ exports.updateProfile = (req, res) => {
         );
       }
     }
-  })
+  });
 };
 
 // Get all users by user id

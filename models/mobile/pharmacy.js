@@ -1,4 +1,4 @@
-let db = require("../../dbconnection.js");
+let db = require("../../db_connection.js");
 let mongoose = require("mongoose");
 mongoose.set("useCreateIndex", true);
 mongoose.connect(db.url);
@@ -14,10 +14,10 @@ let pharmacySchema = new Schema({
   country: String,
   state: String,
   city: String,
-  zipcode: String,
+  zip_code: String,
   picture: String,
   status: Number,
-  deleted: Number,
+  user_id: String,
   created_date: { type: Date, default: Date.now },
   updated_date: { type: Date },
 });

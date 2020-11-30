@@ -4,7 +4,7 @@ let app = express();
 let bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "150mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
-let dbConfig = require("./dbconnection.js");
+let dbConfig = require("./db_connection.js");
 
 let mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
