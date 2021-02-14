@@ -1,7 +1,5 @@
-let db = require("../../db_connection.js");
 let mongoose = require("mongoose");
 mongoose.set("useCreateIndex", true);
-mongoose.connect(db.url);
 let Schema = mongoose.Schema;
 let pharmacySchema = new Schema({
   name: String,

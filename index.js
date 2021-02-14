@@ -4,24 +4,17 @@ let app = express();
 let bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "150mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
-let dbConfig = require("./db_connection.js");
-
+let dbUrl = require("./db_connection");
 let mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
 
-mongoose.connect(dbConfig.url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-mongoose.connection.on("error", function () {
-  console.log("Could not connect to the database. Exiting now...");
-  process.exit();
-});
-
-mongoose.connection.once("open", function () {
-  console.log("Successfully connected to the database");
-});
+mongoose
+  .connect(dbUrl.url, dbUrl.options)
+  .then(() => {
+    console.log("DB: Connect OK!");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.use(function (req, res, next) {
   //allow cross origin requests
